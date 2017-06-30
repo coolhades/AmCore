@@ -1,5 +1,6 @@
 package com.hades.corelib;
 
+import android.util.Log;
 import android.view.View;
 
 import java.lang.reflect.Constructor;
@@ -86,12 +87,15 @@ public class AmFactory {
         //获取Class
         Class<?> cls = null;
         try {
+            Log.d("AmFactory", "ClassName = "+holdermap.get(code));
             cls = Class.forName(holdermap.get(code));
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
         try {
-            constructor = cls.getConstructor(View.class);
+            if (cls != null) {
+                constructor = cls.getConstructor(View.class);
+            }else throw new NullPointerException("反射失败！请检查组件是否正确注册？");
         } catch (NoSuchMethodException e) {
             e.printStackTrace();
         }
